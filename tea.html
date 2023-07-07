@@ -1,0 +1,144 @@
+
+<head>
+  <title>layout</title>
+</head>
+
+
+
+<body>
+  <style>
+    body {
+      background-color:rgb(23, 82, 134);
+    }
+    .master {
+      display:grid;
+      grid-template-columns:7.25rem 1fr 1fr;
+      gap:1rem;
+      min-height:100vh;
+    }
+    .code {
+      background-color: rgb(49, 49, 49);
+    }
+    .input {
+      width:8ch;
+      background-color: grey;
+      border:none;
+    }
+    .var,.if,.end, .print,.main{
+     display:block;
+      width:7rem;
+      margin:0.2rem;
+      background-color:rgb(119, 253, 126);
+      justify-content:space-around;
+      padding: 0.2rem;
+    /*   felx-direction:column; */
+    }
+    .nest {
+      padding-left:2rem;
+    }
+    .butt {
+      width:5ch;
+    }
+
+    .disp {
+      background-color: grey;
+      display:flex;
+      flex-direction: column;
+    }
+    .structure {
+      height:100%;
+    }
+   .terminal {
+    min-height:25%;
+    background-color:rgb(49, 49, 49);
+    color: rgb(93, 255, 101);
+   }
+   #runIt {
+    background-color: black;
+    color: aliceblue;
+   }
+  </style>
+
+  <div class = "master">
+    <div class = "store">
+
+    <div class = "var" id = "variable">
+      <label for = "name"> <button class = "butt">var</button></label>
+      <input id = "box" type = "text" name = "hello" class =  "input">
+    </div>
+    <div class = "end" id = "endblock">
+      <label for = "name"> <button class = "butt">end</button></label>
+      <input id = "box" type = "text" name = "hello" class =  "input">
+    </div>
+
+    <div class = "if" id = "ifBlock">
+      <label for = "name"> <button class = "butt">if</button></label>
+      <input id = "box" type = "text" name = "hello" class =  "input">
+    </div>
+
+    <div class = "print" id = "printBlock">
+      <label for = "name"> <button class = "butt">print</button></label>
+      <input id = "box" type = "text" name = "hello" class =  "input">
+    </div>
+
+  </div>
+  
+    
+  <div class = "code" id = "code">
+    <div class = "main"><button value = "main">main</button></div>
+    <div class = "nest" id = "codea"></div>
+  </div>
+  
+  <div class = "disp">
+    <div class = "structure">
+      <button id = "runIt">Run</button>
+    </div>
+    <div class = "terminal">>></div>
+  </div>
+
+  </div>
+
+  
+
+  <script>
+  let conditional = new Set();
+  conditional.add("if").add("while").add("else").add("for");
+  let stack = "#codea";
+  let arr = document.querySelectorAll(".store div");
+
+  for(let elem of arr) {
+    elem.onclick = insertIntoCode;
+  }
+
+  function insertIntoCode() {
+    let mainBlock;
+    let elem = this.cloneNode(true);
+    elem.setAttribute("id","");
+
+    if(this.className == "end") {
+      let curhead = document.querySelector(stack);
+      curhead.setAttribute("id","");
+      stack = stack.slice(0,-1);
+    }
+
+    mainBlock = document.querySelector(stack);
+    mainBlock.append(elem);
+
+    if(conditional.has(elem.className)) {
+      newDiv = mainBlock.cloneNode(false);
+      stack = stack + "a";
+      newDiv.setAttribute("id",stack.slice(1));
+      mainBlock.append(newDiv);
+    }
+    if(stack == "#code") {
+        stack = "";
+        return;
+      }
+  }
+ 
+  </script> 
+  <script src = "interpret.js"></script>
+</body>
+
+
+

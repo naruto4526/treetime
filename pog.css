@@ -1,0 +1,56 @@
+* {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: small;
+}
+
+
+.header {
+  min-height: 8vh;
+  background-color:rgb(107, 164, 214);
+}
+
+.master {
+  display : grid;
+  grid-template-columns : 0.5fr 1fr 1fr;
+  gap : 1rem;
+  padding-top:0.5rem;
+  padding-bottom:0.5rem;
+}
+.master div {
+  border-radius:0.5rem;
+}
+.store {
+  background-color: rgb(155, 180, 224);
+  display : block;
+}
+.code {
+  background-color: rgb(49, 49, 49);
+  display : block;
+  padding-left : 0.5rem;
+}
+.show {
+  background-color:  rgb(216, 229, 252);
+  display : block;
+  min-height : 77vh;
+}
+.footer {
+  min-height : 7vh;
+  background-color: rgb(81, 81, 81);
+}
+.store div {
+  background-color: rgb(146, 146, 255);
+  margin:0.2rem;
+  border-radius:1rem;
+  text-align: center;
+}
+.code div{
+  display:inline;
+  background-color: rgb(146, 146, 255);
+  border-radius:1rem;
+  text-align: center;
+
+}
+.indent {
+  padding:0.2em;
+  padding-left : 0.5rem;
+}
