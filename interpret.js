@@ -28,6 +28,5 @@ buttonToRun.onclick = function() {
 
 function run(obj) {
 
-  alert("why "+ obj);
   
 }
