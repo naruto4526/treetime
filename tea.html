@@ -3,8 +3,6 @@
   <title>layout</title>
 </head>
 
-
-
 <body>
   <style>
     body {
@@ -24,7 +22,7 @@
       background-color: grey;
       border:none;
     }
-    .var,.if,.end, .print,.main, .empty, .else{
+    .var,.if,.end, .print,.main, .empty, .else, .while ,.for, .math{
      display:block;
       width:7rem;
       margin:0.2rem;
@@ -66,6 +64,12 @@
       <label> <button class = "butt">int</button></label>
       <input type = "text" name = "hello" class =  "input">
     </div>
+
+    <div class = "math" id = "math">
+      <label> <button class = "butt">math</button></label>
+      <input type = "text" name = "hello" class =  "input">
+    </div>
+
     <div class = "end" id = "end">
       <label > <button class = "butt">end</button></label>
     </div>
@@ -74,6 +78,17 @@
       <label> <button class = "butt">if</button></label>
       <input type = "text" name = "hello" class =  "input">
     </div>
+
+    <div class = "for" id = "forStmt">
+      <label> <button class = "butt">for</button></label>
+      <input type = "text" name = "hello" class =  "input">
+    </div>
+
+    <div class = "while" id = "whileStmt">
+      <label> <button class = "butt">while</button></label>
+      <input type = "text" name = "hello" class =  "input">
+    </div>
+
     <div class = "else" id = "elseCondition">
       <label> <button class = "butt">else</button></label>
     </div>
@@ -109,10 +124,13 @@
   
 
   <script>
+  
   let conditional = new Set();
   let endBlock = new Set();
+  
   endBlock.add("end").add("else");
   conditional.add("if").add("while").add("else").add("for").add("empty");
+
   let stack = [];
   stack.push(document.querySelector("#code"));
   stack.push(document.querySelector("#codea"));
