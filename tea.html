@@ -24,7 +24,7 @@
       background-color: grey;
       border:none;
     }
-    .var,.if,.end, .print,.main{
+    .var,.if,.end, .print,.main, .empty{
      display:block;
       width:7rem;
       margin:0.2rem;
@@ -53,7 +53,7 @@
     background-color:rgb(49, 49, 49);
     color: rgb(93, 255, 101);
    }
-   #runIt {
+   .runIt {
     background-color: black;
     color: aliceblue;
    }
@@ -68,16 +68,20 @@
     </div>
     <div class = "end" id = "endblock">
       <label for = "name"> <button class = "butt">end</button></label>
-      <input id = "box" type = "text" name = "hello" class =  "input">
     </div>
 
-    <div class = "if" id = "ifBlock">
+    <div class = "if" id = "ifcondition">
       <label for = "name"> <button class = "butt">if</button></label>
       <input id = "box" type = "text" name = "hello" class =  "input">
     </div>
 
     <div class = "print" id = "printBlock">
       <label for = "name"> <button class = "butt">print</button></label>
+      <input id = "box" type = "text" name = "hello" class =  "input">
+    </div>
+
+    <div class = "empty" id = "isempty">
+      <label for = "name"> <button class = "butt">isempty</button></label>
       <input id = "box" type = "text" name = "hello" class =  "input">
     </div>
 
@@ -91,9 +95,10 @@
   
   <div class = "disp">
     <div class = "structure">
-      <button id = "runIt">Run</button>
+      <button class = "runIt" id = "runpgm">Run</button>
+      <button class = "runIt" id = "clc">clc</button>
     </div>
-    <div class = "terminal">>></div>
+    <div class = "terminal"></div>
   </div>
 
   </div>
@@ -102,39 +107,44 @@
 
   <script>
   let conditional = new Set();
-  conditional.add("if").add("while").add("else").add("for");
-  let stack = "#codea";
-  let arr = document.querySelectorAll(".store div");
+  conditional.add("if").add("while").add("else").add("for").add("empty");
+  let stack = [];
+  stack.push(document.querySelector("#code"));
+  stack.push(document.querySelector("#codea"));
+  let arr = document.querySelectorAll(".store > div");
 
   for(let elem of arr) {
     elem.onclick = insertIntoCode;
   }
-
+  // function hide (event) {
+  //   event.target.nextElementSibling.hidden = true;
+  // }
   function insertIntoCode() {
+    if(stack.length == 1)return;
     let mainBlock;
     let elem = this.cloneNode(true);
     elem.setAttribute("id","");
 
     if(this.className == "end") {
-      let curhead = document.querySelector(stack);
-      curhead.setAttribute("id","");
-      stack = stack.slice(0,-1);
+      stack.pop();
     }
 
-    mainBlock = document.querySelector(stack);
+    mainBlock = stack.at(-1);
     mainBlock.append(elem);
 
     if(conditional.has(elem.className)) {
+      // elem.firstElementChild.onclick = hide;
       newDiv = mainBlock.cloneNode(false);
-      stack = stack + "a";
-      newDiv.setAttribute("id",stack.slice(1));
       mainBlock.append(newDiv);
+      stack.push(newDiv);
     }
-    if(stack == "#code") {
-        stack = "";
-        return;
-      }
   }
+  let clear = document.querySelector("#clc");
+  clear.onclick = function() {
+    let term = document.querySelector(".terminal");
+    term.innerHTML = "";
+  }
+
  
   </script> 
   <script src = "interpret.js"></script>
