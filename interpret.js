@@ -89,20 +89,20 @@ function ifStmt(obj) {
   string = string.trim(); 
   string = string.replace(/ /g,"");
   // alert(string)
-  // let elseElem = obj.nextElementSibling.nextElementSibling;
-  // let elseBlock;
-  // if(elseElem.className == "else") {
-  //   elseBlock = elseElem.nextElementSibling;
-  // }
   if(conditionCheck(string)) {
     // alert("true")
     start(obj.nextElementSibling.childNodes);
     
   }
   else {
-    return;
+    let elseElem = obj.nextElementSibling.nextElementSibling;
+    let elseBlock;
+    if(elseElem.className == "else") {
+      elseBlock = elseElem.nextElementSibling;
+      start(elseBlock.childNodes);
+    }
+    else return;
   }
-
 }
 
 execute
