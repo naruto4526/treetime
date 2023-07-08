@@ -58,7 +58,6 @@ function varDeclare(obj) {
 
 function math(obj) {
   let ops = ["*","/","+","-","%"];
-  
   let string = obj.lastElementChild.value;
   string = string.trim(); 
   let arrStr = string.split(",");
@@ -67,6 +66,16 @@ function math(obj) {
     let arr = str.split("=");
     let lhs = arr[0];
     let rhs = arr.at(-1);
+    if(rhs.indexOf("ABS") == 0) {
+      rhs = rhs.slice(4);
+      rhs = rhs.slice(0,-1);
+      let splitArr = rhs.split("-");
+      if(splitArr.length == 1) {
+        globalVariables.set(lhs,Math.abs(getVal(rhs)));
+      }
+      else globalVariables.set(lhs,Math.abs(getVal(splitArr[0]) - getVal(splitArr.at(-1))));
+      return;
+    }
     for(let sign of ops) {
       if(rhs.indexOf(sign) == -1)continue;
       let nums = rhs.split(sign);
@@ -77,16 +86,48 @@ function math(obj) {
   }
 }
 
-//function to handle print statement
+//function to handle print statement and to clear terminal
 
+printStack = [];
+let term = document.querySelector(".terminal");
+let para = document.createElement('p');
+term.append(para);
+printStack.push(para);
 function printIt(obj) {
  
   let string = obj.lastElementChild.value;
+  let str = string.slice(0,2);
+  if(str=='\\n') {
+    string = string.slice(2);
+    let newPara = document.createElement('p');
+    term.append(newPara);
+    printStack.push(newPara);
+  }
+  let elem = printStack.at(-1);
+  str = string.slice(-2);
+  if(str == '\\n') {
+    let newPara = document.createElement('p');
+    term.append(newPara);
+    printStack.push(newPara);
+    string = string.slice(0,-2);
+  }
   if(globalVariables.has(string)) string = globalVariables.get(string);
-  let elem = document.querySelector(".terminal");
-  elem.insertAdjacentHTML('beforeend', `<p>>>${string}</p>`);
+  elem.insertAdjacentText('beforeend', `${string}`);
+  // alert(term.innerHTML);
 
 }
+
+let clear = document.querySelector("#clc");
+clear.onclick = function() {
+  let term = document.querySelector(".terminal");
+  term.innerHTML = "";
+  printStack = [];
+  let para = document.createElement('p');
+  para.innerHTMl = ">>";
+  term.append(para);
+  printStack.push(para);
+}
+
 
 //function to evaluate condition from string 
 

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<head>
+  <title>design</title>
+</head>
+
+<body style = "background-color: rgb(33, 33, 33);">
+  <style>
+    .master {
+      min-height:100vh;
+      display : grid;
+      grid-template-columns: 8.25rem 1fr 1fr;
+      gap:1rem;
+    }
+    .code {
+      background-color: rgb(56, 56, 56);
+    }
+    .store {
+     
+      background-color: rgb(84, 84, 84);
+    }
+
+    .var,.if,.end, .print,.main, .empty, .else, .while ,.for, .math{
+     display:block;
+      width:7rem;
+      margin:0.4rem;
+      background-color:rgb(119, 253, 126);
+      justify-content:space-around;
+      padding: 0.2rem;
+    /*   felx-direction:column; */
+    }
+    .structure {
+      background-color: rgb(205, 205, 205);
+      min-height: 65vh;
+    }
+    .input {
+      width:5ch;
+    }
+    .butt {
+      width:8ch;
+    }
+    .nest {
+      padding-left: 1.8rem;
+    }
+    .terminal {
+      color:rgb(105, 255, 105);
+    }
+  </style>
+  
+  <div class = "master">
+    <div class = "store">
+      <div class = "var" id = "variable">
+        <label> <button class = "butt">int</button></label>
+        <input type = "text" name = "hello" class =  "input">
+      </div>
+      <div class = "if" id = "ifcondition">
+        <label> <button class = "butt">if</button></label>
+        <input type = "text" name = "hello" class =  "input">
+      </div>
+      
+      <div class = "for" id = "forStmt">
+        <label> <button class = "butt">for</button></label>
+        <input type = "text" name = "hello" class =  "input">
+      </div>
+
+      <div class = "while" id = "whileStmt">
+        <label> <button class = "butt">while</button></label>
+        <input type = "text" name = "hello" class =  "input">
+      </div>
+
+      <div class = "else" id = "elseCondition">
+        <label> <button class = "butt">else</button></label>
+      </div>
+
+      <div class = "print" id = "printBlock">
+        <label> <button class = "butt">print</button></label>
+        <input type = "text" name = "hello" class =  "input">
+      </div>
+
+      <div class = "math" id = "math">
+        <label> <button class = "butt">math</button></label>
+        <input type = "text" name = "hello" class =  "input">
+      </div>
+  
+      <div class = "end" id = "end">
+        <label > <button class = "butt">end</button></label>
+      </div>
+      <div class = "empty" id = "isempty">
+        <label> <button class = "butt">isempty</button></label>
+        <input type = "text" name = "hello" class =  "input">
+      </div>
+
+    </div>
+
+    <div class = "code" id = "code">
+      <div class = "main"><button>main</button></div>
+      <div class = "nest" id = "codea"></div>
+    </div>
+
+    <div class = "disp">
+      <div class = "structure">
+        <button class = "runIt" id = "runpgm">Run</button>
+        <button class = "runIt" id = "clc">clc</button>
+      </div>
+      <div class = "terminal"></div>
+    </div>
+  </div>
+
+  <script>
+
+    let hasDiv = new Set();
+    let leaveBlock = new Set();
+    hasDiv.add("if").add("else").add("while").add("for").add("isempty").add("main").add("else");
+    leaveBlock.add("end").add("else");
+    let currentBlock = "";
+    let listElem = Array.from(document.querySelectorAll(".store div"));
+    let mainBlock = document.querySelector(".main");
+    let addTo;
+    mainBlock.onclick = makeCurrent;
+
+    function makeCurrent(event) {
+      addTo = this;
+      if(event.shiftKey) {
+        if(addTo.className == "end") {
+          addTo.remove();
+          return;
+        }
+        addTo.nextElementSibling.remove();
+        return;
+      }
+      if(currentBlock == "")return;
+
+      let newElem = currentBlock.cloneNode(true);
+      newElem.setAttribute("id","");
+      newElem.onclick = makeCurrent;
+ 
+      if(hasDiv.has(addTo.className)) {
+
+        if(addTo == addTo.parentElement.lastElementChild||addTo.nextElementSibling.className != "nest") {
+          // alert("works");
+          let newDiv = document.createElement('div');
+          newDiv.setAttribute("class","nest");
+          addTo.after(newDiv);
+        }
+        
+        addTo = addTo.nextElementSibling;
+        if(leaveBlock.has(currentBlock.className)) {
+          addTo.after(newElem);
+          currentBlock = "";
+          return;
+        }
+        addTo.prepend(newElem);
+        currentBlock = "";
+        return;
+      }
+      if(leaveBlock.has(currentBlock.className)) {
+        addTo = addTo.parentElement;
+      }
+      addTo.after(newElem);
+      currentBlock = "";
+      return;
+    }
+
+
+    for(let elem of listElem) {
+      elem.onclick = function() {
+        currentBlock = this;
+        // alert(currentBlock.className);
+      }
+    }
+  </script>
+  <script src = "interpret.js"></script>
+</body>

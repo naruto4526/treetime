@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <head>
   <title>layout</title>
 </head>
@@ -51,6 +51,7 @@
     background-color:rgb(49, 49, 49);
     color: rgb(93, 255, 101);
    }
+   
    .runIt {
     background-color: black;
     color: aliceblue;
@@ -147,7 +148,7 @@
     let mainBlock;
     let elem = this.cloneNode(true);
     elem.setAttribute("id","");
-
+    elem.ondblclick = rem;
     if(endBlock.has(this.className)) {
       stack.pop();
     }
@@ -162,16 +163,14 @@
       stack.push(newDiv);
     }
   }
-  let clear = document.querySelector("#clc");
-  clear.onclick = function() {
-    let term = document.querySelector(".terminal");
-    term.innerHTML = "";
-  }
 
+  function rem() {
+    this.nextElementSibling.remove();
+  }
  
   </script> 
   <script src = "interpret.js"></script>
 </body>
 
-
+</html>
 
