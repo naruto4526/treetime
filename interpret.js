@@ -9,7 +9,7 @@
 //maps that have variables and functions to execute any given node in the tree.
 let execute = new Map();
 let globalVariables = new Map();
-
+let stackOfLoops = []
 //avoid has elements/objects to be avoided when running, they will be handled by previous function calls
 let avoid = new Set();
 avoid
@@ -22,7 +22,7 @@ avoid
 function plus(number1,number2) { return number1 + number2;}
 function sub(number1,number2) {return number1 - number2;}
 function mod(number1,number2) {return number1%number2;}
-function divide(number1,number2) {return number1/number2;}
+function divide(number1,number2) {return Math.floor(number1/number2);}
 function product(number1,number2) {return number1*number2;}
 function greaterThan(number1,number2) {return number1 > number2;}
 function greaterThanOrEqual(number1,number2) {return number1 >= number2;}
@@ -31,6 +31,12 @@ function lessthanOrEqual(number1,number2) {return number1 <= number2;}
 function isEqual(number1,number2) {return number1 == number2;}
 function isNotEqual(number1, number2) {return number1 != number2;}
 
+//function to clean string
+function clean(string) {
+  string = string.trim();
+  string = string.replace(/ /g,"");
+  return string;
+}
 //function to see if ident present in map, and if so, return val. Otherwise, ident must be number so return that
 
 function getVal(string) {
@@ -42,16 +48,17 @@ function getVal(string) {
 
 function varDeclare(obj) { 
   let string = obj.lastElementChild.value;
-  string = string.trim(); 
+  string = clean(string);
   let arrStr = string.split(",");
   for (let str of arrStr) {
-    str = str.replace(/ /g,"");
+  
     let arr = str.split("=");
     let lhs = arr[0];
     let rhs = arr.at(-1);
     //rhs = eval(rhs);
     globalVariables.set(lhs,getVal(rhs));
   }
+  return 0;
 }
 
 //function to do math
@@ -59,13 +66,14 @@ function varDeclare(obj) {
 function math(obj) {
   let ops = ["*","/","+","-","%"];
   let string = obj.lastElementChild.value;
-  string = string.trim(); 
+  string = clean(string);
   let arrStr = string.split(",");
   for (let str of arrStr) {
-    str = str.replace(/ /g,"");
+
     let arr = str.split("=");
     let lhs = arr[0];
     let rhs = arr.at(-1);
+
     if(rhs.indexOf("ABS") == 0) {
       rhs = rhs.slice(4);
       rhs = rhs.slice(0,-1);
@@ -76,14 +84,21 @@ function math(obj) {
       else globalVariables.set(lhs,Math.abs(getVal(splitArr[0]) - getVal(splitArr.at(-1))));
       return;
     }
+    let flag = 0;
     for(let sign of ops) {
       if(rhs.indexOf(sign) == -1)continue;
       let nums = rhs.split(sign);
       let numberOne = getVal(nums[0]);
       let numberTwo = getVal(nums[1]);
       globalVariables.set(lhs,execute.get(sign)(numberOne,numberTwo));
+      flag = 1;
+      break;
+    }
+    if(flag == 0) {
+      globalVariables.set(lhs,getVal(rhs));
     }
   }
+  return 0;
 }
 
 //function to handle print statement and to clear terminal
@@ -114,6 +129,7 @@ function printIt(obj) {
   if(globalVariables.has(string)) string = globalVariables.get(string);
   elem.insertAdjacentText('beforeend', `${string}`);
   // alert(term.innerHTML);
+  return 0;
 
 }
 
@@ -153,12 +169,12 @@ function conditionCheck(string) {
 
 function ifStmt(obj) {
   let string = obj.lastElementChild.value;
-  string = string.trim(); 
-  string = string.replace(/ /g,"");
+  string = clean(string);
   // alert(string)
   if(conditionCheck(string)) {
     // alert("true")
-    start(obj.nextElementSibling.childNodes);
+   let val = start(obj.nextElementSibling.childNodes);
+   if(val == -1)return -1;
     
   }
   else {
@@ -166,19 +182,20 @@ function ifStmt(obj) {
     let elseBlock;
     if(elseElem.className == "else") {
       elseBlock = elseElem.nextElementSibling;
-      start(elseBlock.childNodes);
+      let val = start(elseBlock.childNodes);
+      if(val == -1)return -1;
     }
-    else return;
   }
+  return 0;
 }
 
 //function to handle for loop
 
 function forLoop(obj) {
+  stackOfLoops.push(obj);
   let string = obj.lastElementChild.value;
   let iter = "it";
-  string = string.trim();
-  string = string.replace(/ /g,"");
+  string = clean(string);
   let condition = string;
   if(string.search("=") != -1) {
     let arr = string.split("=");
@@ -193,27 +210,36 @@ function forLoop(obj) {
       if(iter != "it") {
         globalVariables.set(iter,i);
       }
-      start(obj.nextElementSibling.childNodes);
+      let val = start(obj.nextElementSibling.childNodes);
+      if(val == -1)return 0;
     }
-    return;
+    return 0;
   }
   for(let i = l; i < r; i++) {
     if(iter != "it") {
       globalVariables.set(iter,i);
     }
-    start(obj.nextElementSibling.childNodes);
+    let val = start(obj.nextElementSibling.childNodes);
+    if(val == -1)return 0;
   }
+  return 0;
 }
 
  //function for while loop
 
  function whileLoop(obj) {
+  stackOfLoops.push(obj);
   let string = obj.lastElementChild.value;
-  string = string.trim();
-  string = string.replace(/ /g,"");
-
+  string = clean(string);
+  let count = 0;
   while(conditionCheck(string)) {
-    start(obj.nextElementSibling.childNodes);
+    count++;
+    if(count == 46185) {
+      alert("While loop exited forcefully");
+      break;
+    }
+    let val = start(obj.nextElementSibling.childNodes);
+    if(val == -1)return 0;
   }
 }
 
@@ -256,10 +282,16 @@ function start(listNodes) {
   }
   for(let node of listNodes) {
     if(avoid.has(node.className))continue;
-    else run(node);
+    if(node.className == "break")return -1;
+    else {
+      let val = run(node);
+      if(val == -1)return val;
+    }
   }
+  return 0;
 }
 
 function run(obj) {
-  execute.get(obj.className)(obj);
+  let val = execute.get(obj.className)(obj);
+  return val;
 }
