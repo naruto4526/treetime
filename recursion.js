@@ -1,7 +1,7 @@
-//function to handle function calls
+//function to handle function calls. It takes as argument, the object that holds the body of the function and the string of actual parameters and returns the result value.
 
-function call(obj) {
-
+function call(obj,str) {
+  
   //getting value from either global or local map 
   function getVal(string) {
     if(localVariables.has(string))return localVariables.get(string);
@@ -9,8 +9,7 @@ function call(obj) {
     else return parseInt(string);
   }
   let string = obj.lastElementChild.value;
-  string = string.trim();
-  string = string.replace(/ /g,"");
+  string = clean(string);
   let args = string;
   let lhs = "";
   if(string.indexOf("=") != -1) {

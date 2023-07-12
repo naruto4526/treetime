@@ -58,7 +58,7 @@ function varDeclare(obj) {
     //rhs = eval(rhs);
     globalVariables.set(lhs,getVal(rhs));
   }
-  return 0;
+  return "goOn";
 }
 
 //function to do math
@@ -82,7 +82,7 @@ function math(obj) {
         globalVariables.set(lhs,Math.abs(getVal(rhs)));
       }
       else globalVariables.set(lhs,Math.abs(getVal(splitArr[0]) - getVal(splitArr.at(-1))));
-      return;
+      return "goOn";
     }
     let flag = 0;
     for(let sign of ops) {
@@ -98,7 +98,7 @@ function math(obj) {
       globalVariables.set(lhs,getVal(rhs));
     }
   }
-  return 0;
+  return "goOn";
 }
 
 //function to handle print statement and to clear terminal
@@ -129,7 +129,7 @@ function printIt(obj) {
   if(globalVariables.has(string)) string = globalVariables.get(string);
   elem.insertAdjacentText('beforeend', `${string}`);
   // alert(term.innerHTML);
-  return 0;
+  return "goOn";
 
 }
 
@@ -173,8 +173,10 @@ function ifStmt(obj) {
   // alert(string)
   if(conditionCheck(string)) {
     // alert("true")
-   let val = start(obj.nextElementSibling.childNodes);
-   if(val == -1)return -1;
+    let val = start(obj.nextElementSibling.childNodes);
+    if(val == "continue")return "continue";
+    else if(val == "break")return "break";
+    else return val;
     
   }
   else {
@@ -183,10 +185,12 @@ function ifStmt(obj) {
     if(elseElem.className == "else") {
       elseBlock = elseElem.nextElementSibling;
       let val = start(elseBlock.childNodes);
-      if(val == -1)return -1;
+      if(val == "continue")return "continue";
+      else if(val == "break")return "break";
+      else return val;
     }
   }
-  return 0;
+  return "goOn";
 }
 
 //function to handle for loop
@@ -211,18 +215,22 @@ function forLoop(obj) {
         globalVariables.set(iter,i);
       }
       let val = start(obj.nextElementSibling.childNodes);
-      if(val == -1)return 0;
+      if(val == "continue"||val == "goOn")continue;
+      else if(val == "break")return "goOn";
+      else return val;
     }
-    return 0;
+    return "goOn";
   }
   for(let i = l; i < r; i++) {
     if(iter != "it") {
       globalVariables.set(iter,i);
     }
     let val = start(obj.nextElementSibling.childNodes);
-    if(val == -1)return 0;
+    if(val == "continue"||val == "goOn")continue;
+    else if(val == "break")return "goOn";
+    else return val;
   }
-  return 0;
+  return "goOn";
 }
 
  //function for while loop
@@ -239,8 +247,11 @@ function forLoop(obj) {
       break;
     }
     let val = start(obj.nextElementSibling.childNodes);
-    if(val == -1)return 0;
+    if(val == "continue"||val == "goOn")continue;
+    else if(val == "break")return "goOn";
+    else return val;
   }
+  return "goOn";
 }
 
 //adding functions to the map to be called later
@@ -282,13 +293,18 @@ function start(listNodes) {
   }
   for(let node of listNodes) {
     if(avoid.has(node.className))continue;
-    if(node.className == "break")return -1;
-    else {
-      let val = run(node);
-      if(val == -1)return val;
-    }
+    if(node.className == "continue")return "continue";
+    if(node.className == "break")return "break";
+    if(node.className == "return")return getVal(clean(node.lastElementChild.value));
+    
+    let val = run(node);
+    if(val == "goOn")continue;
+    else if(val == "continue")return "continue";
+    else if(val == "break")return "break";
+    else return val;
+    
   }
-  return 0;
+  return "goOn";
 }
 
 function run(obj) {
