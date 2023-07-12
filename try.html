@@ -123,10 +123,8 @@
       addTo = this;
       //handling delete case
       if(event.shiftKey) {
-        if(addTo.className == "end") {
-          addTo.remove();
-        }
-        else addTo.nextElementSibling.remove();
+        if(addTo == addTo.parentElement.lastElementChild)addTo = addTo.parentElement;
+        addTo.nextElementSibling.remove();
         return;
       }
       //handling hiding of bloacks
@@ -142,6 +140,7 @@
       let newElem = currentBlock.cloneNode(true);
       newElem.setAttribute("id","");
       newElem.onclick = makeCurrent;
+      
       //when nesting is required, a new div has to be added below selected block, if not already there
       if(hasDiv.has(addTo.className)) {
 
