@@ -19,7 +19,7 @@
       background-color: rgb(84, 84, 84);
     }
 
-    .var,.if,.end, .print,.main, .empty, .else, .while ,.for, .math,.break,.continue{
+    .var,.if,.end, .print,.main, .empty, .else, .while ,.for, .math,.break,.continue, .def,.call,.return{
      display:block;
       width:7rem;
       margin:0.4rem;
@@ -92,10 +92,23 @@
       <div class = "continue" id = "continue">
         <label > <button class = "butt">cont</button></label>
       </div>
+      <div class = "def" id = "def">
+        <label> <button class = "butt">def</button></label>
+        <input type = "text" name = "hello" class =  "input">
+      </div>
+      <div class = "call" id = "call">
+        <label> <button class = "butt">call</button></label>
+        <input type = "text" name = "hello" class =  "input">
+      </div>
       <div class = "empty" id = "isempty">
         <label> <button class = "butt">isempty</button></label>
         <input type = "text" name = "hello" class =  "input">
       </div>
+      <div class = "return" id = "return">
+        <label> <button class = "butt">return</button></label>
+        <input type = "text" name = "hello" class =  "input">
+      </div>
+     
 
     </div>
 
@@ -117,7 +130,7 @@
 
     let hasDiv = new Set();
     let leaveBlock = new Set();
-    hasDiv.add("if").add("else").add("while").add("for").add("isempty").add("main").add("else");
+    hasDiv.add("if").add("else").add("while").add("for").add("isempty").add("main").add("else").add("def");
     leaveBlock.add("end").add("else");
     let currentBlock = "";
     let listElem = Array.from(document.querySelectorAll(".store div"));
