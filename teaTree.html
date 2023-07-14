@@ -4,5 +4,113 @@
 </head>
 <body>
 
+  <style>
+    .see {
+      display:inline-flex;
+      flex-wrap: wrap;
+      width:36ch;
+    }
+    .see div {
+      width: 3ch;
+      height: 3ch;
+      margin: 0.15ch;
+      border-style: solid;
+      border-width: 0.1ch;
+
+    }
+    .color {
+      background-color:rgb(0, 81, 255);
+      color: white;
+    }
+    .green {
+      background-color: rgb(47, 255, 92);
+      color:black;
+    }
+    .red {
+      background-color: red;
+    }
+  </style>
+  <div class = "structure">
+  <div class = "see"></div>
+</div>
+<div><button id = "startPgm">start</button></div>
+
+
+
+<script>
+
+  let elem = document.querySelector(".see");
+  for(let i = 0; i < 100; i++) {
+    let newDiv = document.createElement('div');
+    elem.prepend(newDiv);
+  }
+  let arr = Array.from(elem.childNodes);
+  for(let box in arr) {
+    arr[box].innerHTML = box;
+    // arr[box].onclilck = makeGreen;
+    // arr[box].ondblclick = makeWall;
+    // box.hidden = true;
+  }
+
+  let start =25;
+  let end = 55;
+
+
+  q = [];
+  q.push(start);
+  len = [];
+  len.push(0);
+  function add(loc,l) {
+    q.push(loc);
+    len.push(l);
+  }
+  let visited = [];
+  
+  function bfs() {
+      if(q.length != 0) {
+      let cur = q.shift();
+      let l = len.shift();
+      if(cur == end) {
+        q.unshift(cur);
+        arr[cur].classList.add('red');
+        if(arr[cur].innerHTML == cur) {
+          arr[cur].innerHTML = `${l}`;
+        }
+        return;
+      }
+      //mark as visited
+      if(visited[cur] == 1)return;
+      arr[cur].classList.toggle('color');
+      visited[cur] = 1;
+      arr[cur].innerHTML = `${l}`;
+      //check if this is end
+      if(cur == end) {
+        q.unshift(cur);
+        return;
+      }
+      //get neighbours
+      let top = cur -10;
+      let bot = cur + 10;
+      let lef = cur - 1;
+      let rig = cur + 1;
+      if(top >= 0 && top < 100 && visited[top] != 1)add(top,l + 1);
+      if(bot >= 0 && bot < 100 && visited[bot] != 1)add(bot,l + 1);
+      if(lef >= 0 && lef < 100 && visited[lef] != 1 && cur%10 != 0)add(lef,l + 1);
+      if(rig >= 0 && rig < 100 && visited[rig] != 1 && cur%10 != 9)add(rig,l + 1);
+    }
+  }
+  let buton = document.querySelector('#startPgm');
+  buton.onclick = ()=> {
+    // alert(`${q.at(-1)} and start is ${start}`)
+    bfs();
+  }
+  arr[start].classList.remove('color');
+  arr[end].classList.remove('color');
+  arr[start].classList.add('green');
+  arr[end].classList.add('green');
+
+
+
+</script>
 </body>
 </html>

@@ -1,13 +1,10 @@
-  // new Map() – creates the map.
-  // map.set(key, value) – stores the value by the key.
-  // map.get(key) – returns the value by the key, undefined if key doesn’t exist in map.
-  // map.has(key) – returns true if the key exists, false otherwise.
-  // map.delete(key) – removes the element (the key/value pair) by the key.
-  // map.clear() – removes everything from the map.
-  // map.size – returns the current element count.
+//flow of calling a funcion is as follows:
+//1. Call function is called when call block is seen, Call function takes string argument it has and passes to math function. 
+//2. Math function takes this string argument and puts into arrStr. For each elem in arrStr, we split into lhs and rhs using = sign
+//3.Now, rhs is passed to getVal function. Rhs is func(args) type string. In getVal, we get the object tied to function name, and then get function definition to get string of formal parameters. String of actual parameters passed from call function to math function to getVal function is now converted to array of values 
+//4. make a call to callFunction() with arguments the object of function defintion, string of formal parameters and array of actual parameters. Inside the function, the assignment of actual to formal parameters take place
 
-
-function callFunction(obj,str1,str2) {
+function callFunction(obj,str1,argArray) {
   //maps that have variables and functions to execute any given node in the tree.
   listOfNodes = obj.nextElementSibling.childNodes;
   let execute = new Map();
@@ -49,17 +46,22 @@ function callFunction(obj,str1,str2) {
     string = string.replace(/ /g,"");
     return string;
   }
+  //function to get text
+  function getText(obj) {
+    let string = obj.lastElementChild.value;
+    return clean(string);
+  } 
   //function to see if ident present in map, and if so, return val. Otherwise, ident must be number so return that
 
   function getVal(string) {
     if(string.indexOf('(') != -1) {
+
       let funcName = string.slice(0,string.indexOf('('));
       string = string.slice(string.indexOf('(') + 1);
       string = string.slice(0,-1);
       string = string.split(',');
       string = string.map(x => getVal(x));
-      string = string.toString();
-      string = "(" + string + ")";
+      
       let obj = globalVariables.get(funcName);
       let formalPara = obj.lastElementChild.value;
       formalPara = clean(formalPara);
@@ -103,7 +105,15 @@ function callFunction(obj,str1,str2) {
       string = obj.lastElementChild.value;
     }
     string = clean(string);
-    let arrStr = string.split(",");
+
+    //splitting in case of multiple comma seperated expressions
+    let arrStr;
+    if(eval != undefined){
+      arrStr = [];
+      arrStr.push(string);
+    }
+    else arrStr = string.split(",");
+
     for (let str of arrStr) {
 
       let arr = str.split("=");
@@ -137,13 +147,13 @@ function callFunction(obj,str1,str2) {
     return "goOn";
   }
 
-  //function to handle print statement and to clear terminal
-
+  //function to handle print statement
   printStack = [];
   let term = document.querySelector(".terminal");
   let para = document.createElement('p');
   term.append(para);
   printStack.push(para);
+
   function printIt(obj) {
   
     let string = obj.lastElementChild.value;
@@ -166,10 +176,10 @@ function callFunction(obj,str1,str2) {
     elem.insertAdjacentText('beforeend', `${string}`);
     // alert(term.innerHTML);
     return "goOn";
-
   }
 
   let clear = document.querySelector("#clc");
+  //function that handles click event on clc to clear termial
   clear.onclick = function() {
     let term = document.querySelector(".terminal");
     term.innerHTML = "";
@@ -184,7 +194,7 @@ function callFunction(obj,str1,str2) {
   //function to evaluate condition from string 
 
   function conditionCheck(string) {
-
+    if(globalVariables.has(string))return getVal(string);
     let arr = ["<=",">=","==","!=","<",">"];
     let operator;
     for (let op of arr) {
@@ -289,6 +299,67 @@ function callFunction(obj,str1,str2) {
     }
     return "goOn";
   }
+  //function to handle stack and queue definition
+
+  function arrayVar(obj) {
+    let string = getText(obj);
+    let localArray = [];
+    globalVariables.set(string,localArray);
+    return "goOn";
+  }
+
+  //function to handle pop
+  function popVal(obj) {
+    let string = getText(obj);
+    string = string.split(',');
+
+    let arrayInMem = globalVariables.get(string.at(-1));
+    let val = arrayInMem.pop();
+    globalVariables.set(string.at(-1),arrayInMem);
+    globalVariables.set(string[0],val);
+    return "goOn";
+  }
+
+  //function to handle push
+  function pushVal(obj) {
+    let string = getText(obj);
+    string = string.split(',');
+    let arrayInMem = globalVariables.get(string[0]);
+    arrayInMem.push(getVal(string.at(-1)));
+    globalVariables.set(string[0],arrayInMem);
+    return "goOn";
+  }
+
+  //function for shift
+  function unshiftVal(obj) {
+    let string = getText(obj);
+    string = string.split(',');
+    let arrayInMem = globalVariables.get(string[0]);
+    arrayInMem.unshift(getVal(string.at(-1)));
+    globalVariables.set(string[0],arrayInMem);
+    return "goOn";
+  }
+
+  //functionfor unshift
+  function shiftVal(obj) {
+    let string = getText(obj);
+    string = string.split(',');
+    let arrayInMem = globalVariables.get(string.at(-1));
+    let val = arrayInMem.shift();
+    globalVariables.set(string.at(-1),arrayInMem);
+    globalVariables.set(string[0],val);
+    return "goOn";
+  }
+  //function to handle isempty check
+  function isEmpty(obj) {
+    let string = getText(obj);
+    string = string.split(',');
+    let variable = globalVariables.get(string.at(-1));
+    if(!variable || variable.length == 0)globalVariables.set(string[0],true);
+    else globalVariables.set(string[0],false);
+    return "goOn";
+  }
+
   //function to handle function definition
   function def(obj) {
     let string = obj.lastElementChild.value;
@@ -304,10 +375,12 @@ function callFunction(obj,str1,str2) {
   function call(obj) {
     let string = obj.lastElementChild.value;
     string = clean(string);
+    // alert(`In call function ${string}`);
     math(obj,string);
     return "goOn";
   }
   
+
   //adding functions to the map to be called later
 
   execute
@@ -329,7 +402,13 @@ function callFunction(obj,str1,str2) {
     .set("for",forLoop)
     .set("while",whileLoop)
     .set("def",def)
-    .set("call",call);
+    .set("call",call)
+    .set("array",arrayVar)
+    .set("push",pushVal)
+    .set("pop",popVal)
+    .set("shift",shiftVal)
+    .set("unshift",unshiftVal)
+    .set("empty",isEmpty);
 
 
   //functions that iterates through parent nodes at current level and executes them
@@ -368,16 +447,13 @@ function callFunction(obj,str1,str2) {
 
   str1 = str1.slice(1);
   str1 = str1.slice(0,-1);
-  str2 = str2.slice(1);
-  str2 = str2.slice(0,-1);
-
   str1 = str1.split(',');
-  str2 = str2.split(',');
+
   // alert(str1);
-  // alert(str2);
+  // alert(argArray);
   //assigning actual parameters to formal parameters 
   for(let arg in str1) {
-    globalVariables.set(str1[arg],parseInt(str2[arg]));
+    globalVariables.set(str1[arg],argArray[arg]);
     // alert(`${str1[arg]} has value ${globalVariables.get(str1[arg])}`);
   }
 

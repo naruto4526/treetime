@@ -1,3 +1,10 @@
+  // new Map() – creates the map.
+  // map.set(key, value) – stores the value by the key.
+  // map.get(key) – returns the value by the key, undefined if key doesn’t exist in map.
+  // map.has(key) – returns true if the key exists, false otherwise.
+  // map.delete(key) – removes the element (the key/value pair) by the key.
+  // map.clear() – removes everything from the map.
+  // map.size – returns the current element count.
 
 //[1,2].forEach(alert);
 //alert(`you chose ${age}`);
@@ -377,3 +384,58 @@ menu.onclick = function(event) {
 
   return false; // prevent browser action (don't go to the URL)
 };
+
+//code for hash pyramid
+<div class="code" id="code">
+<div class="main"><button>main</button></div>
+<div class="nest" id="codea"><div class="def" id="">
+  <label> <button class="butt">def</button></label>
+  <input type="text" name="hello" class="input" value = "fun(a,b)">
+</div><div class="nest"><div class="math" id="">
+  <label> <button class="butt">math</button></label>
+  <input type="text" name="hello" class="input" value = "center = a/2,center = center + 1,a = a + 1">
+</div><div class="for" id="">
+  <label> <button class="butt">for</button></label>
+  <input type="text" name="hello" class="input" value = "i = 1:a">
+</div><div class="nest"><div class="math" id="">
+  <label> <button class="butt">math</button></label>
+  <input type="text" name="hello" class="input" value = "val = ABS(center - i)">
+</div><div class="if" id="">
+  <label> <button class="butt">if</button></label>
+  <input type="text" name="hello" class="input" value = "val <= b">
+</div><div class="nest"><div class="print" id="">
+  <label> <button class="butt">print</button></label>
+  <input type="text" name="hello" class="input" value = "# ">
+</div><div class="if" id="">
+  <label> <button class="butt">if</button></label>
+  <input type="text" name="hello" class="input" value = "val == 0">
+</div><div class="nest"><div class="break" id="">
+  <label> <button class="butt">break</button></label>
+</div></div><div class="end" id="">
+  <label> <button class="butt">end</button></label>
+</div></div><div class="else" id="">
+  <label> <button class="butt">else</button></label>
+</div><div class="nest"><div class="print" id="" value = " . ">
+  <label> <button class="butt">print</button></label>
+  <input type="text" name="hello" class="input">
+</div></div><div class="end" id="">
+  <label> <button class="butt">end</button></label>
+</div></div><div class="end" id="">
+  <label> <button class="butt">end</button></label>
+</div><div class="return" id="">
+  <label> <button class="butt">return</button></label>
+  <input type="text" name="hello" class="input" value = "0">
+</div></div><div class="end" id="">
+  <label> <button class="butt">end</button></label>
+</div><div class="for" id="">
+  <label> <button class="butt">for</button></label>
+  <input type="text" name="hello" class="input" value = "i = 0:7">
+</div><div class="nest"><div class="call" id="">
+  <label> <button class="butt">call</button></label>
+  <input type="text" name="hello" class="input" value = "val = fun(13,i)">
+</div></div><div class="end" id="">
+  <label> <button class="butt">end</button></label>
+</div></div><div class="end" id="">
+  <label> <button class="butt">end</button></label>
+</div>
+</div>
