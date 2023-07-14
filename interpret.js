@@ -3,7 +3,7 @@
 //2. Math function takes this string argument and puts into arrStr. For each elem in arrStr, we split into lhs and rhs using = sign
 //3.Now, rhs is passed to getVal function. Rhs is func(args) type string. In getVal, we get the object tied to function name, and then get function definition to get string of formal parameters. String of actual parameters passed from call function to math function to getVal function is now converted to array of values 
 //4. make a call to callFunction() with arguments the object of function defintion, string of formal parameters and array of actual parameters. Inside the function, the assignment of actual to formal parameters take place
-
+let stack = []
 function callFunction(obj,str1,argArray) {
   //maps that have variables and functions to execute any given node in the tree.
   listOfNodes = obj.nextElementSibling.childNodes;
@@ -255,6 +255,18 @@ function callFunction(obj,str1,argArray) {
     condition = condition.split(":");
     let l = getVal(condition[0]);
     let r = getVal(condition.at(-1));
+    if(l == r) {
+      for(let i of l) {
+        if(iter != "it") {
+          globalVariables.set(iter,i);
+        }
+        let val = start(obj.nextElementSibling.childNodes);
+        if(val == "continue"||val == "goOn")continue;
+        else if(val == "break")return "goOn";
+        else return val;
+      }
+      return "goOn";
+    }
     if(l > r) {
       for(let i = l; i > r; i--) {
         if(iter != "it") {
@@ -436,6 +448,7 @@ function callFunction(obj,str1,argArray) {
   }
 
   function run(obj) {
+    stack.push(obj);
     let val = execute.get(obj.className)(obj);
     return val;
   }
@@ -466,5 +479,7 @@ let buttonToRun = document.querySelector("#runpgm");
 buttonToRun.onclick = function() {
   callFunction(document.querySelector(".main"));
 }
+
+
 
 

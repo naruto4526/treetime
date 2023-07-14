@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<head>
+  <title>chottomatte</title>
+</head>
+<body>
+  <button id = "click">Butt</button>
+
+  <script>
+
+//rec function schedules wait to take place with argument j, and then schedules itself to take place with argument j + 1. This schedulesd version of rec will only actuallu happen after prev changes to j. Prev only increased dby wait which will wait for button click. So after button click, wait runs, resets button click so no further wait execution until button click,and it also increments prev. This increment of prev, executes the scheduled rec function, which will schedule a wait to happen which will wait for button, and another rec which will wait for prev to be incremented by already scheduled wait.
+
+
+    let val = 0;
+    let prev = 0;
+    let res;
+    click.onclick = ()=>{val = 1};
+    function wait(i) {
+      if(val == 1 ) {
+        console.log(i);
+        val = 0;
+        prev = i;
+        return i + 1;
+      }
+      else {
+        setTimeout(wait,0,i);
+      }
+    }
+    function rec(j) {
+      if(j == prev + 1){
+        val = wait(j);
+        console.log(val + 1);
+        rec(j + 1);
+        if(j == 100)return;
+      }
+      else {
+        setTimeout(rec,0,j);
+      }
+    }
+
+    rec(1);
+
+
+
+
+
+
+
+
+  </script>
+</body>
+
+</html>

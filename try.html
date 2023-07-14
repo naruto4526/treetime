@@ -12,10 +12,14 @@
       gap:1rem;
     }
     .code {
+      height:95vh;
+      overflow: auto;
       background-color: rgb(56, 56, 56);
     }
     .store {
-     
+      overflow: auto;
+      height:95vh;
+      min-width: 9.2rem;
       background-color: rgb(84, 84, 84);
     }
 
@@ -26,10 +30,11 @@
       background-color:rgb(119, 253, 126);
       justify-content:space-around;
       padding: 0.2rem;
+      border-radius: 0.5ch;
     /*   felx-direction:column; */
     }
     .structure {
-      background-color: rgb(205, 205, 205);
+      background-color: rgb(244, 244, 244);
       min-height: 65vh;
     }
     .input {
@@ -42,10 +47,39 @@
       padding-left: 1.8rem;
     }
     .terminal {
+      margin-top: 1rem;
+      padding-left:0.8ch;
       color:rgb(105, 255, 105);
+      height: 28vh;
+      overflow: auto;
+    }
+
+    .see {
+      margin:5%;
+      margin-left: 20%;
+      margin-right: 15%;
+      display:inline-flex;
+      flex-wrap: wrap;
+      width:40ch;
+    }
+    .see div {
+      font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+      font-size: 1.8ch;
+      width: 3.4ch;
+      height: 3.4ch;
+      margin: 0.15ch;
+      border-style: solid;
+      border-width: 0.25ch;
+      border-radius: 1ch;
+      text-align: center;
+      /* align-content: center; */
+
+    }
+    .disp {
+      height:98vh;
     }
   </style>
-  
+  <div class = "navbar" style = "color: white;">Navbar here</div>
   <div class = "master">
     <div class = "store">
       <div class = "var" id = "variable">
@@ -140,12 +174,28 @@
       <div class = "structure">
         <button class = "runIt" id = "runpgm">Run</button>
         <button class = "runIt" id = "clc">clc</button>
+        <div class = "center"><div class = "see"></div></div>
       </div>
       <div class = "terminal"></div>
     </div>
   </div>
 
   <script>
+    //code for displaying grid
+    let elem = document.querySelector(".see");
+  for(let i = 0; i < 100; i++) {
+    let newDiv = document.createElement('div');
+    elem.prepend(newDiv);
+  }
+  let arr = Array.from(elem.childNodes);
+  for(let box in arr) {
+    // arr[box].innerHTML = box;
+    // arr[box].onclilck = makeGreen;
+    // arr[box].ondblclick = makeWall;
+    // box.hidden = true;
+  }
+
+  //code for the code block sequence
 
     let hasDiv = new Set();
     let leaveBlock = new Set();
