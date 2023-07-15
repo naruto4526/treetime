@@ -8,7 +8,7 @@
     .master {
       min-height:100vh;
       display : grid;
-      grid-template-columns: 8.25rem 1fr 1fr;
+      grid-template-columns: 8.8rem 1fr 1fr;
       gap:1rem;
     }
     .code {
@@ -19,13 +19,13 @@
     .store {
       overflow: auto;
       height:95vh;
-      min-width: 9.2rem;
+      min-width: 9.7rem;
       background-color: rgb(84, 84, 84);
     }
 
-    .var,.if,.end, .print,.main, .empty, .else, .while ,.for, .math,.break,.continue, .def,.call,.return,.array,.push,.pop,.shift,.unshift{
+    .var,.if,.end, .print,.main, .empty, .else, .while ,.for, .math,.break,.continue, .def,.call,.return,.array,.push,.pop,.shift,.unshift,.color,.whileNe,.ifNtSeen,.mrkSeen,.ifNtWall,.moveTo{
      display:block;
-      width:7rem;
+      width:7.6rem;
       margin:0.4rem;
       background-color:rgb(119, 253, 126);
       justify-content:space-around;
@@ -41,7 +41,7 @@
       width:5ch;
     }
     .butt {
-      width:8ch;
+      width:9ch;
     }
     .nest {
       padding-left: 1.8rem;
@@ -77,6 +77,15 @@
     }
     .disp {
       height:98vh;
+    }
+    .green {
+      background-color: rgb(57, 255, 100);
+    }
+    .black {
+      background-color: black;
+    }
+    .blue{
+      background-color: rgb(46, 70, 255);
     }
   </style>
   <div class = "navbar" style = "color: white;">Navbar here</div>
@@ -161,19 +170,93 @@
         <label> <button class = "butt">return</button></label>
         <input type = "text" name = "hello" class =  "input">
       </div>
+      <div class = "color" id = "color">
+        <label> <button class = "butt">color</button></label>
+        <input type = "text" name = "hello" class =  "input">
+      </div>
+      <div class = "whileNe" id = "whileNe">
+        <label> <button class = "butt">whileNe</button></label>
+        <input type = "text" name = "hello" class =  "input">
+      </div>
+      <div class = "ifNtSeen" id = "ifNtSeen">
+        <label> <button class = "butt">ifNtSeen</button></label>
+        <input type = "text" name = "hello" class =  "input">
+      </div>
+      <div class = "ifNtWall" id = "ifNtWall">
+        <label> <button class = "butt">ifNtWall</button></label>
+        <input type = "text" name = "hello" class =  "input">
+      </div>
+      <div class = "mrkSeen" id = "mrkSeen">
+        <label> <button class = "butt">mrkSeen</button></label>
+        <input type = "text" name = "hello" class =  "input">
+      </div>
+      <div class = "moveTo" id = "moveTo">
+        <label> <button class = "butt">moveTo</button></label>
+        <input type = "text" name = "hello" class =  "input">
+      </div>
      
 
     </div>
 
-    <div class = "code" id = "code">
-      <div class = "main"><button>main</button></div>
-      <div class = "nest" id = "codea"></div>
+    <div class="code" id="code">
+      <div class="main"><button>main</button></div>
+      <div class="nest" id="codea"><div class="def" id="">
+        <label> <button class="butt">def</button></label>
+        <input type="text" name="hello" class="input" value = "dfs(i)">
+      </div><div class="nest"><div class="if" id="">
+        <label> <button class="butt">if</button></label>
+        <input type="text" name="hello" class="input">
+      </div><div class="nest"><div class="print" id="">
+        <label> <button class="butt">print</button></label>
+        <input type="text" name="hello" class="input">
+      </div><div class="color" id="">
+        <label> <button class="butt">color</button></label>
+        <input type="text" name="hello" class="input">
+      </div><div class="return" id="">
+        <label> <button class="butt">return</button></label>
+        <input type="text" name="hello" class="input">
+      </div></div><div class="end" id="">
+        <label> <button class="butt">end</button></label>
+      </div><div class="moveTo" id="">
+        <label> <button class="butt">moveTo</button></label>
+        <input type="text" name="hello" class="input">
+      </div><div class="mrkSeen" id="">
+        <label> <button class="butt">mrkSeen</button></label>
+        <input type="text" name="hello" class="input">
+      </div><div class="color" id="">
+        <label> <button class="butt">color</button></label>
+        <input type="text" name="hello" class="input">
+      </div><div class="for" id="">
+        <label> <button class="butt">for</button></label>
+        <input type="text" name="hello" class="input">
+      </div><div class="nest"><div class="ifNtSeen" id="">
+        <label> <button class="butt">ifNtSeen</button></label>
+        <input type="text" name="hello" class="input">
+      </div><div class="nest"><div class="ifNtWall" id="">
+        <label> <button class="butt">ifNtWall</button></label>
+        <input type="text" name="hello" class="input">
+      </div><div class="nest"><div class="call" id="">
+        <label> <button class="butt">call</button></label>
+        <input type="text" name="hello" class="input">
+      </div></div><div class="end" id="">
+        <label> <button class="butt">end</button></label>
+      </div></div><div class="end" id="">
+        <label> <button class="butt">end</button></label>
+      </div></div><div class="end" id="">
+        <label> <button class="butt">end</button></label>
+      </div></div><div class="end" id="">
+        <label> <button class="butt">end</button></label>
+      </div><div class="call" id="">
+        <label> <button class="butt">call</button></label>
+        <input type="text" name="hello" class="input">
+      </div></div>
     </div>
 
     <div class = "disp">
       <div class = "structure">
         <button class = "runIt" id = "runpgm">Run</button>
         <button class = "runIt" id = "clc">clc</button>
+        <button class = "runIt" id = "step">step</button>
         <div class = "center"><div class = "see"></div></div>
       </div>
       <div class = "terminal"></div>
@@ -190,16 +273,64 @@
   let arr = Array.from(elem.childNodes);
   for(let box in arr) {
     // arr[box].innerHTML = box;
-    // arr[box].onclilck = makeGreen;
-    // arr[box].ondblclick = makeWall;
+    arr[box].onclick = makeGreen;
+    arr[box].onclick = makeWall;
+    arr[box].setAttribute("id",box);
+
     // box.hidden = true;
   }
 
+  let points = [];
+  let visited = new Set();
+  let waLL = new Set();
+  let start;
+  let end;
+  function makeGreen(event) {
+    if(points.length == 2) {
+      arr[points[0]].classList.remove('green');
+      points.shift();
+      points.push(parseInt(event.target.id));
+      event.target.classList.add('green');
+      
+    }
+    else {
+      event.target.classList.add('green');
+      points.push(parseInt(event.target.id));
+      start = points[0];
+      end = points.at(-1);
+    }
+  }
+
+  function makeWall(event) {
+    if(event.ctrlKey){makeGreen(event);
+    return;}
+    if(points.includes(event.target.id))return;
+    let elem = event.target;
+    if(waLL.has(elem.id)) {
+      waLL.delete(elem.id);
+      elem.classList.remove('black');
+    }
+    else {
+      waLL.add(parseInt(elem.id));
+      elem.classList.add('black');
+    }
+  }
+  //adding eventhandlers manually
+  
+  let nodes = document.querySelector('#codea');
+  function addListener(nodes) {
+    for (let node of nodes.childNodes) {
+    node.onclick = makeCurrent;
+    if(node.className == "nest")addListener(node);
+    }
+  }
+  addListener(nodes);
+  
   //code for the code block sequence
 
     let hasDiv = new Set();
     let leaveBlock = new Set();
-    hasDiv.add("if").add("else").add("while").add("for").add("isempty").add("main").add("else").add("def");
+    hasDiv.add("if").add("else").add("while").add("for").add("isempty").add("main").add("else").add("def").add("ifNtSeen").add("ifNtWall").add("whileNe");
     leaveBlock.add("end").add("else");
     let currentBlock = "";
     let listElem = Array.from(document.querySelectorAll(".store div"));

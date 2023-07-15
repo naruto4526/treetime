@@ -3,7 +3,10 @@
 //2. Math function takes this string argument and puts into arrStr. For each elem in arrStr, we split into lhs and rhs using = sign
 //3.Now, rhs is passed to getVal function. Rhs is func(args) type string. In getVal, we get the object tied to function name, and then get function definition to get string of formal parameters. String of actual parameters passed from call function to math function to getVal function is now converted to array of values 
 //4. make a call to callFunction() with arguments the object of function defintion, string of formal parameters and array of actual parameters. Inside the function, the assignment of actual to formal parameters take place
-let stack = []
+timerId = [];
+let butOn = 0;
+let prev = 0;
+let order = 1;
 function callFunction(obj,str1,argArray) {
   //maps that have variables and functions to execute any given node in the tree.
   listOfNodes = obj.nextElementSibling.childNodes;
@@ -19,6 +22,11 @@ function callFunction(obj,str1,argArray) {
     // alert(str1);
     // alert(str2);
   }
+
+  //getting start and endpoints into this function
+  globalVariables.set("start",points[0]);
+  globalVariables.set("end",points[1]);
+
   //avoid has elements/objects to be avoided when running, they will be handled by previous function calls
   let avoid = new Set();
   avoid
@@ -188,12 +196,36 @@ function callFunction(obj,str1,argArray) {
     para.innerHTMl = ">>";
     term.append(para);
     printStack.push(para);
+    visited = new Set();
+    points = [];
+    waLL = new Set();
+    for(let obj of arr) {
+      obj.classList.remove('green');
+      obj.classList.remove('black');
+      obj.classList.remove('blue');
+    }
+    order = 1;
+    prev = 0;
+    for(let ID of timerId) {
+      clearTimeout(ID);
+    }
+    timerId = [];
   }
 
 
   //function to evaluate condition from string 
 
-  function conditionCheck(string) {
+  function conditionCheck(string,flag) {
+    if(flag != undefined) {
+      if(flag == 1) {
+        return !(visited.has(getVal(string)));
+      }
+      else if(flag == 0) {
+        return !(waLL.has(getVal(string)));
+      }
+
+      else if(flag == 2)return !(globalVariables.get(string).length == 0);
+    }
     if(globalVariables.has(string))return getVal(string);
     let arr = ["<=",">=","==","!=","<",">"];
     let operator;
@@ -213,11 +245,11 @@ function callFunction(obj,str1,argArray) {
 
   //function to handle if statement and else statement
 
-  function ifStmt(obj) {
+  function ifStmt(obj,flag) {
     let string = obj.lastElementChild.value;
     string = clean(string);
     // alert(string)
-    if(conditionCheck(string)) {
+    if(conditionCheck(string,flag)) {
       // alert("true")
       let val = start(obj.nextElementSibling.childNodes);
       if(val == "continue")return "continue";
@@ -293,12 +325,12 @@ function callFunction(obj,str1,argArray) {
 
   //function for while loop
 
-  function whileLoop(obj) {
+  function whileLoop(obj,flag) {
     stackOfLoops.push(obj);
     let string = obj.lastElementChild.value;
     string = clean(string);
     let count = 0;
-    while(conditionCheck(string)) {
+    while(conditionCheck(string,flag)) {
       count++;
       if(count == 46185) {
         alert("While loop exited forcefully");
@@ -392,7 +424,69 @@ function callFunction(obj,str1,argArray) {
     return "goOn";
   }
   
+  //function to handle ifNtSeen
 
+  function ifNtSeen(obj) {
+    return ifStmt(obj,1);
+  }
+  //function to handle ifNtWall
+  function ifNtWall(obj) {
+    return ifStmt(obj,0);
+  }
+  //function to handle whileNe
+  function whileNe(obj) {
+    return whileLoop(obj,2);
+  }
+  //function for markseen
+  function mrkSeen(obj) {
+    let string = getText(obj);
+    let num = getVal(string);
+    visited.add(num);
+    return "goOn";
+  }
+  //function to moveTo
+  function moveTo(obj) {
+    let cur = getText(obj);
+    cur = getVal(cur);
+    if(cur%10 == 0) globalVariables.set("left",cur);
+    else globalVariables.set("left",cur-1);
+    if(cur%10 == 9)globalVariables.set("right",cur);
+    else globalVariables.set("right",cur + 1);
+    if(cur<10)globalVariables.set("top",cur);
+    else globalVariables.set("top",cur-10);
+    if(cur>=90)globalVariables.set("bottom",cur);
+    else globalVariables.set("bottom",cur + 10);
+
+    neigh = [];
+    neigh.push(globalVariables.get("top"));
+    neigh.push(globalVariables.get("right"));
+    neigh.push(globalVariables.get("bottom"));
+    neigh.push(globalVariables.get("left"));
+    globalVariables.set("neigh",neigh);
+    return "goOn";
+  }
+  //function to add blue color, goes onto task queue/callback queue
+  function wait(n,i) {
+    if(prev == i - 1 && butOn == 1) {
+      prev = i;
+      butOn = 0;
+      arr[n].classList.add('blue');
+      return;
+    }
+    else {
+      TID = setTimeout(wait,0,n,i);
+      timerId.push(TID);
+    }
+  }
+  //function that schedules wait
+  function color(obj) {
+    let num = getVal(getText(obj));
+    // alert(num);
+    // alert(order);
+    wait(num,order);
+    order = order + 1;
+    return "goOn";
+  }
   //adding functions to the map to be called later
 
   execute
@@ -420,7 +514,13 @@ function callFunction(obj,str1,argArray) {
     .set("pop",popVal)
     .set("shift",shiftVal)
     .set("unshift",unshiftVal)
-    .set("empty",isEmpty);
+    .set("empty",isEmpty)
+    .set("ifNtSeen",ifNtSeen)
+    .set("ifNtWall",ifNtWall)
+    .set("whileNe",whileNe)
+    .set("mrkSeen",mrkSeen)
+    .set("moveTo",moveTo)
+    .set("color",color);
 
 
   //functions that iterates through parent nodes at current level and executes them
@@ -448,7 +548,7 @@ function callFunction(obj,str1,argArray) {
   }
 
   function run(obj) {
-    stack.push(obj);
+   
     let val = execute.get(obj.className)(obj);
     return val;
   }
@@ -481,5 +581,7 @@ buttonToRun.onclick = function() {
 }
 
 
-
-
+let debug = document.querySelector("#step");
+debug.onclick = ()=> {
+  butOn = butOn == 1?0:1;
+}

@@ -444,3 +444,71 @@ menu.onclick = function(event) {
       <div class = "main"><button>main</button></div>
       <div class = "nest" id = "codea"></div>
     </div>
+
+{/* //bfs exploration */}
+
+
+
+
+    //dfss
+    <div class="code" id="code">
+      <div class="main"><button>main</button></div>
+      <div class="nest" id="codea"><div class="def" id="">
+        <label> <button class="butt">def</button></label>
+        <input type="text" name="hello" class="input" value="dfs(i)">
+      </div><div class="nest"><div class="if" id="">
+        <label> <button class="butt">if</button></label>
+        <input type="text" name="hello" class="input">
+      </div><div class="nest"><div class="print" id="">
+        <label> <button class="butt">print</button></label>
+        <input type="text" name="hello" class="input">
+      </div><div class="color" id="">
+        <label> <button class="butt">color</button></label>
+        <input type="text" name="hello" class="input">
+      </div><div class="return" id="">
+        <label> <button class="butt">return</button></label>
+        <input type="text" name="hello" class="input">
+      </div></div><div class="end" id="">
+        <label> <button class="butt">end</button></label>
+      </div><div class="moveTo" id="">
+        <label> <button class="butt">moveTo</button></label>
+        <input type="text" name="hello" class="input">
+      </div><div class="mrkSeen" id="">
+        <label> <button class="butt">mrkSeen</button></label>
+        <input type="text" name="hello" class="input">
+      </div><div class="color" id="">
+        <label> <button class="butt">color</button></label>
+        <input type="text" name="hello" class="input">
+      </div><div class="for" id="">
+        <label> <button class="butt">for</button></label>
+        <input type="text" name="hello" class="input">
+      </div><div class="nest"><div class="ifNtSeen" id="">
+        <label> <button class="butt">ifNtSeen</button></label>
+        <input type="text" name="hello" class="input">
+      </div><div class="nest"><div class="ifNtWall" id="">
+        <label> <button class="butt">ifNtWall</button></label>
+        <input type="text" name="hello" class="input">
+      </div><div class="nest"><div class="call" id="">
+        <label> <button class="butt">call</button></label>
+        <input type="text" name="hello" class="input">
+      </div><div class="if" id="">
+        <label> <button class="butt">if</button></label>
+        <input type="text" name="hello" class="input">
+      </div><div class="nest"><div class="return" id="">
+        <label> <button class="butt">return</button></label>
+        <input type="text" name="hello" class="input">
+      </div></div><div class="end" id="">
+        <label> <button class="butt">end</button></label>
+      </div></div><div class="end" id="">
+        <label> <button class="butt">end</button></label>
+      </div></div><div class="end" id="">
+        <label> <button class="butt">end</button></label>
+      </div></div><div class="end" id="">
+        <label> <button class="butt">end</button></label>
+      </div></div><div class="end" id="">
+        <label> <button class="butt">end</button></label>
+      </div><div class="call" id="">
+        <label> <button class="butt">call</button></label>
+        <input type="text" name="hello" class="input">
+      </div></div>
+    </div>

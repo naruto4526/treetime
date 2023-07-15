@@ -7,7 +7,7 @@
 
   <script>
 
-//rec function schedules wait to take place with argument j, and then schedules itself to take place with argument j + 1. This schedulesd version of rec will only actuallu happen after prev changes to j. Prev only increased dby wait which will wait for button click. So after button click, wait runs, resets button click so no further wait execution until button click,and it also increments prev. This increment of prev, executes the scheduled rec function, which will schedule a wait to happen which will wait for button, and another rec which will wait for prev to be incremented by already scheduled wait.
+//rec function schedules wait to take place with argument j, and then schedules itself to take place with argument j + 1. This scheduled version of rec will only actuallu happen after prev changes to j. Prev only increased dby wait which will wait for button click. So after button click, wait runs, resets button click so no further wait execution until button click,and it also increments prev. This increment of prev, executes the scheduled rec function, which will schedule a wait to happen which will wait for button, and another rec which will wait for prev to be incremented by already scheduled wait.
 
 
     let val = 0;
